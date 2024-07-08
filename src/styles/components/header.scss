@@ -1,0 +1,39 @@
+header {
+    background-color:  #b1b1b170;
+    padding: 1rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 35px;
+  
+    h1 {
+      margin: 0;
+      color:   #93ad18;
+    }
+  
+    nav {
+      ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+  
+        a {
+          text-decoration: none;
+          color: #93ad18;
+  
+          &.nav-active {
+            font-weight: bold;
+            border-bottom: 2px solid #93ad18;
+          }
+  
+          li {
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+          }
+        }
+      }
+    }
+  }
+  
