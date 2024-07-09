@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+# HRnet
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# HRNet est une application de gestion des employés permettant de créer et de lister les informations des employés. Cette application utilise React pour la construction de l'interface utilisateur et des bibliothèques React spécifiques pour certaines fonctionnalités comme la sélection de dates et les menus déroulants.
 
-## Available Scripts
+# Fonctionnalités Principales
+1. Création d'Employés : Un formulaire permettant d'ajouter les informations des employés (prénom, nom, date de naissance, date de début, département, adresse, etc.).
+2. Liste des Employés : Affiche une liste paginée des employés enregistrés dans le    localStorage.
+3. Pagination : Les listes d'employés peuvent être parcourues page par page.
+4. Sélection de Dates : Utilisation de react-datepicker pour sélectionner les dates.
+5. Menus Déroulants : Utilisation de react-select pour les champs de sélection.
 
-In the project directory, you can run:
+# Prérequis
+Node.js et npm installés sur votre machine.
+Installation
+Clonez le dépôt du projet :
 
-### `npm start`
+# git clone <https://github.com/AhmaduLo/projet-14.git>
+cd P12_Front-end
+et dans 
+cd .\hrnet-react\
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Installez les dépendances :
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+npm install
 
-### `npm test`
+# Démarrage
+Pour lancer l'application en mode développement : npm start
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# Ouvrez http://localhost:3000 pour voir l'application dans votre navigateur.
 
-### `npm run build`
+# Structure du Projet
+. src/
+. components/
+. Formulaire.js : Composant pour le formulaire de création d'employés.
+. ListeeEmployer.js : Composant pour l'affichage de la liste des employés avec . pagination.
+. Header.js : Composant pour l'en-tête de l'application.
+. Footer.js : Composant pour le pied de page de l'application.
+. StateSelect.js : Composant pour le champ de sélection des états.
+. App.js : Composant principal de l'application.
+. App.css : Styles généraux de l'application.
+. index.js : Point d'entrée de l'application.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Utilisation des Composants
+Formulaire de Création d'Employés
+Le composant Formulaire permet de saisir les informations d'un employé et de les sauvegarder dans le localStorage. Après la sauvegarde, un message de confirmation est affiché.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Liste des Employés
+Le composant ListeeEmployer affiche la liste des employés sauvegardés dans le localStorage. Il inclut la pagination pour naviguer entre les pages de la liste.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Contribution
+Les contributions sont les bienvenues ! Veuillez soumettre une issue ou une pull request pour proposer des améliorations ou des corrections.

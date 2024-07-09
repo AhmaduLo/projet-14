@@ -13,7 +13,7 @@ const Formulaire = (props) => {
   const [department, setDepartment] = useState("");
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
-  const [state, setState] = useState("");
+  const [state, setState] = useState("AL");
   const [zipCode, setZipCode] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -28,7 +28,7 @@ const Formulaire = (props) => {
     setDepartment("");
     setStreet("");
     setCity("");
-    setState("");
+    setState("AL");// Valeur par défaut
     setZipCode("");
     setErrors({});
   };
@@ -44,6 +44,8 @@ const Formulaire = (props) => {
     if (!startDate) newErrors.startDate = true;
     if (!street) newErrors.street = true;
     if (!city) newErrors.city = true;
+    if (!state) newErrors.state = true;
+    if (!department) newErrors.department = true;
     if (!zipCode) newErrors.zipCode = true;
 
     if (Object.keys(newErrors).length > 0) {
