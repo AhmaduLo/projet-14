@@ -13,7 +13,7 @@ const Formulaire = (props) => {
   const [department, setDepartment] = useState("");
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
-  const [state, setState] = useState("AL");
+  const [state, setState] = useState("AL"); // Valeur par défaut pour le champ State
   const [zipCode, setZipCode] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -28,7 +28,7 @@ const Formulaire = (props) => {
     setDepartment("");
     setStreet("");
     setCity("");
-    setState("AL");// Valeur par défaut
+    setState("AL"); // Réinitialiser le champ State à sa valeur par défaut
     setZipCode("");
     setErrors({});
   };
@@ -48,6 +48,7 @@ const Formulaire = (props) => {
     if (!department) newErrors.department = true;
     if (!zipCode) newErrors.zipCode = true;
 
+    // Si des champs ne sont pas remplis, afficher un message d'erreur
     if (Object.keys(newErrors).length > 0) {
       setErrorMessage("Veuillez remplir tous les champs.");
       setErrors(newErrors);
@@ -100,10 +101,12 @@ const Formulaire = (props) => {
         <input
           type="text"
           id="first-name"
+          aria-label="First Name"
           value={firstName}
           onChange={(e) => {
             setFirstName(e.target.value);
-            if (e.target.value) setErrors((prev) => ({ ...prev, firstName: false }));
+            if (e.target.value)
+              setErrors((prev) => ({ ...prev, firstName: false }));
           }}
           className={errors.firstName ? "error-border" : ""}
         />
@@ -112,10 +115,12 @@ const Formulaire = (props) => {
         <input
           type="text"
           id="last-name"
+          aria-label="Last Name"
           value={lastName}
           onChange={(e) => {
             setLastName(e.target.value);
-            if (e.target.value) setErrors((prev) => ({ ...prev, lastName: false }));
+            if (e.target.value)
+              setErrors((prev) => ({ ...prev, lastName: false }));
           }}
           className={errors.lastName ? "error-border" : ""}
         />
@@ -131,6 +136,7 @@ const Formulaire = (props) => {
           maxDate={new Date()}
           showYearDropdown
           scrollableYearDropdown
+          aria-label="Date of Birth"
           className={errors.dateOfBirth ? "error-border" : ""}
         />
 
@@ -142,6 +148,7 @@ const Formulaire = (props) => {
             if (date) setErrors((prev) => ({ ...prev, startDate: false }));
           }}
           dateFormat="MM/dd/yyyy"
+          aria-label="Start Date"
           className={errors.startDate ? "error-border" : ""}
         />
 
@@ -151,10 +158,12 @@ const Formulaire = (props) => {
           <input
             id="street"
             type="text"
+            aria-label="Street"
             value={street}
             onChange={(e) => {
               setStreet(e.target.value);
-              if (e.target.value) setErrors((prev) => ({ ...prev, street: false }));
+              if (e.target.value)
+                setErrors((prev) => ({ ...prev, street: false }));
             }}
             className={errors.street ? "error-border" : ""}
           />
@@ -163,10 +172,12 @@ const Formulaire = (props) => {
           <input
             id="city"
             type="text"
+            aria-label="City"
             value={city}
             onChange={(e) => {
               setCity(e.target.value);
-              if (e.target.value) setErrors((prev) => ({ ...prev, city: false }));
+              if (e.target.value)
+                setErrors((prev) => ({ ...prev, city: false }));
             }}
             className={errors.city ? "error-border" : ""}
           />
@@ -175,9 +186,11 @@ const Formulaire = (props) => {
           <StateSelect
             id="state"
             value={state}
+            aria-label="State"
             onChange={(e) => {
               setState(e.target.value);
-              if (e.target.value) setErrors((prev) => ({ ...prev, state: false }));
+              if (e.target.value)
+                setErrors((prev) => ({ ...prev, state: false }));
             }}
             className={errors.state ? "error-border" : ""}
           />
@@ -186,10 +199,12 @@ const Formulaire = (props) => {
           <input
             id="zip-code"
             type="text"
+            aria-label="Zip Code"
             value={zipCode}
             onChange={(e) => {
               setZipCode(e.target.value);
-              if (e.target.value) setErrors((prev) => ({ ...prev, zipCode: false }));
+              if (e.target.value)
+                setErrors((prev) => ({ ...prev, zipCode: false }));
             }}
             className={errors.zipCode ? "error-border" : ""}
           />
@@ -198,10 +213,12 @@ const Formulaire = (props) => {
         <label htmlFor="department">Department</label>
         <select
           id="department"
+          aria-label="Department"
           value={department}
           onChange={(e) => {
             setDepartment(e.target.value);
-            if (e.target.value) setErrors((prev) => ({ ...prev, department: false }));
+            if (e.target.value)
+              setErrors((prev) => ({ ...prev, department: false }));
           }}
           className={errors.department ? "error-border" : ""}
         >
@@ -213,12 +230,19 @@ const Formulaire = (props) => {
           <option value="Legal">Legal</option>
         </select>
       </form>
-      <button type="button" onClick={saveEmployee}>Save</button>
+      <button type="button" aria-label="Save Employee" onClick={saveEmployee}>
+        Save
+      </button>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       {showModal && (
-        <div className="modal">
+        <div className="modal" role="dialog" aria-modal="true">
           <div className="modal-content">
-            <span className="close" onClick={closeModal}>
+            <span
+              className="close"
+              onClick={closeModal}
+              role="button"
+              aria-label="Close"
+            >
               &times;
             </span>
             <p>Employee Created!</p>
