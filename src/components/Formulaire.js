@@ -6,246 +6,240 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const Formulaire = (props) => {
   // Déclaration des états pour chaque champ du formulaire
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState(null);
-  const [startDate, setStartDate] = useState(new Date());
-  const [department, setDepartment] = useState("");
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("AL"); // Valeur par défaut pour le champ State
-  const [zipCode, setZipCode] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [errors, setErrors] = useState({});
+  const [prenom, setPrenom] = useState("");
+  const [nom, setNom] = useState("");
+  const [dateDeNaissance, setDateDeNaissance] = useState(null);
+  const [dateDebut, setDateDebut] = useState(new Date());
+  const [departement, setDepartement] = useState("");
+  const [rue, setRue] = useState("");
+  const [ville, setVille] = useState("");
+  const [etat, setEtat] = useState("AL"); // Valeur par défaut pour le champ État
+  const [codePostal, setCodePostal] = useState("");
+  const [afficherModal, setAfficherModal] = useState(false);
+  const [messageErreur, setMessageErreur] = useState("");
+  const [erreurs, setErreurs] = useState({});
 
   // Fonction pour réinitialiser les champs du formulaire
-  const resetForm = () => {
-    setFirstName("");
-    setLastName("");
-    setDateOfBirth(null);
-    setStartDate(new Date());
-    setDepartment("");
-    setStreet("");
-    setCity("");
-    setState("AL"); // Réinitialiser le champ State à sa valeur par défaut
-    setZipCode("");
-    setErrors({});
+  const reinitialiserFormulaire = () => {
+    setPrenom("");
+    setNom("");
+    setDateDeNaissance(null);
+    setDateDebut(new Date());
+    setDepartement("");
+    setRue("");
+    setVille("");
+    setEtat("AL"); // Réinitialiser le champ État à sa valeur par défaut
+    setCodePostal("");
+    setErreurs({});
   };
 
   // Fonction pour sauvegarder un employé dans le localStorage
-  const saveEmployee = () => {
-    const newErrors = {};
+  const sauvegarderEmploye = () => {
+    const nouvellesErreurs = {};
+    if (!prenom) nouvellesErreurs.prenom = true;
+    if (!nom) nouvellesErreurs.nom = true;
+    if (!dateDeNaissance) nouvellesErreurs.dateDeNaissance = true;
+    if (!dateDebut) nouvellesErreurs.dateDebut = true;
+    if (!rue) nouvellesErreurs.rue = true;
+    if (!ville) nouvellesErreurs.ville = true;
+    if (!etat) nouvellesErreurs.etat = true;
+    if (!departement) nouvellesErreurs.departement = true;
+    if (!codePostal) nouvellesErreurs.codePostal = true;
 
-    // Vérification que tous les champs sont remplis
-    if (!firstName) newErrors.firstName = true;
-    if (!lastName) newErrors.lastName = true;
-    if (!dateOfBirth) newErrors.dateOfBirth = true;
-    if (!startDate) newErrors.startDate = true;
-    if (!street) newErrors.street = true;
-    if (!city) newErrors.city = true;
-    if (!state) newErrors.state = true;
-    if (!department) newErrors.department = true;
-    if (!zipCode) newErrors.zipCode = true;
-
-    // Si des champs ne sont pas remplis, afficher un message d'erreur
-    if (Object.keys(newErrors).length > 0) {
-      setErrorMessage("Veuillez remplir tous les champs.");
-      setErrors(newErrors);
+    if (Object.keys(nouvellesErreurs).length > 0) {
+      setMessageErreur("Veuillez remplir tous les champs.");
+      setErreurs(nouvellesErreurs);
       return;
     }
 
-    // Vérification de l'âge (18 ans ou plus)
-    const age = differenceInYears(new Date(), dateOfBirth);
+    const age = differenceInYears(new Date(), dateDeNaissance);
     if (age < 18) {
-      setErrorMessage("L'employé doit avoir au moins 18 ans.");
-      setErrors({ dateOfBirth: true });
+      setMessageErreur("L'employé doit avoir au moins 18 ans.");
+      setErreurs({ dateDeNaissance: true });
       return;
     }
 
-    // Récupération des employés stockés ou initialisation d'un tableau vide
-    const employees = JSON.parse(localStorage.getItem("employees")) || [];
-    // Création d'un objet représentant l'employé
-    const employee = {
-      firstName,
-      lastName,
-      dateOfBirth: dateOfBirth.toLocaleDateString(),
-      startDate: startDate.toLocaleDateString(),
-      department,
-      street,
-      city,
-      state,
-      zipCode,
+    const employes = JSON.parse(localStorage.getItem("employes")) || [];
+    const employe = {
+      prenom,
+      nom,
+      dateDeNaissance: dateDeNaissance.toLocaleDateString(),
+      dateDebut: dateDebut.toLocaleDateString(),
+      departement,
+      rue,
+      ville,
+      etat,
+      codePostal,
     };
-    // Ajout de l'employé au tableau et stockage dans le localStorage
-    employees.push(employee);
-    localStorage.setItem("employees", JSON.stringify(employees));
-    // Affichage du modal de confirmation
-    setShowModal(true);
-    // Réinitialisation du message d'erreur
-    setErrorMessage("");
-    resetForm();
+    employes.push(employe);
+    localStorage.setItem("employes", JSON.stringify(employes));
+    setAfficherModal(true);
+    setMessageErreur("");
+    reinitialiserFormulaire();
   };
 
   // Fonction pour fermer le modal et réinitialiser le formulaire
-  const closeModal = () => {
-    setShowModal(false);
-    resetForm();
+  const fermerModal = () => {
+    setAfficherModal(false);
+    reinitialiserFormulaire();
   };
 
   return (
     <div className="container">
-      <h2>Create Employee</h2>
-      <form id="create-employee">
-        <label htmlFor="first-name">First Name</label>
+      <h2>Créer un Employé</h2>
+      <form id="creer-employe">
+        <label htmlFor="prenom">Prénom</label>
         <input
           type="text"
-          id="first-name"
-          aria-label="First Name"
-          value={firstName}
+          id="prenom"
+          placeholder="Entrez le prénom"
+          value={prenom}
           onChange={(e) => {
-            setFirstName(e.target.value);
+            setPrenom(e.target.value);
             if (e.target.value)
-              setErrors((prev) => ({ ...prev, firstName: false }));
+              setErreurs((prev) => ({ ...prev, prenom: false }));
           }}
-          className={errors.firstName ? "error-border" : ""}
+          className={erreurs.prenom ? "error-border" : ""}
         />
 
-        <label htmlFor="last-name">Last Name</label>
+        <label htmlFor="nom">Nom</label>
         <input
           type="text"
-          id="last-name"
-          aria-label="Last Name"
-          value={lastName}
+          id="nom"
+          placeholder="Entrez le nom"
+          value={nom}
           onChange={(e) => {
-            setLastName(e.target.value);
-            if (e.target.value)
-              setErrors((prev) => ({ ...prev, lastName: false }));
+            setNom(e.target.value);
+            if (e.target.value) setErreurs((prev) => ({ ...prev, nom: false }));
           }}
-          className={errors.lastName ? "error-border" : ""}
+          className={erreurs.nom ? "error-border" : ""}
         />
 
-        <label htmlFor="date-of-birth">Date of Birth</label>
+        <label htmlFor="date-de-naissance">Date de Naissance</label>
         <DatePicker
-          selected={dateOfBirth}
+          id="date-de-naissance"
+          selected={dateDeNaissance}
           onChange={(date) => {
-            setDateOfBirth(date);
-            if (date) setErrors((prev) => ({ ...prev, dateOfBirth: false }));
+            setDateDeNaissance(date);
+            if (date)
+              setErreurs((prev) => ({ ...prev, dateDeNaissance: false }));
           }}
           dateFormat="MM/dd/yyyy"
           maxDate={new Date()}
           showYearDropdown
           scrollableYearDropdown
-          aria-label="Date of Birth"
-          className={errors.dateOfBirth ? "error-border" : ""}
+          className={erreurs.dateDeNaissance ? "error-border" : ""}
         />
 
-        <label htmlFor="start-date">Start Date</label>
+        <label htmlFor="date-debut">Date de Début</label>
         <DatePicker
-          selected={startDate}
+          id="date-debut"
+          selected={dateDebut}
           onChange={(date) => {
-            setStartDate(date);
-            if (date) setErrors((prev) => ({ ...prev, startDate: false }));
+            setDateDebut(date);
+            if (date) setErreurs((prev) => ({ ...prev, dateDebut: false }));
           }}
           dateFormat="MM/dd/yyyy"
-          aria-label="Start Date"
-          className={errors.startDate ? "error-border" : ""}
+          className={erreurs.dateDebut ? "error-border" : ""}
         />
 
-        <fieldset className="address">
-          <legend>Address</legend>
-          <label htmlFor="street">Street</label>
+        <fieldset className="adresse">
+          <legend>Adresse</legend>
+          <label htmlFor="rue">Rue</label>
           <input
-            id="street"
+            id="rue"
+            placeholder="Entrez la rue"
             type="text"
-            aria-label="Street"
-            value={street}
+            value={rue}
             onChange={(e) => {
-              setStreet(e.target.value);
+              setRue(e.target.value);
               if (e.target.value)
-                setErrors((prev) => ({ ...prev, street: false }));
+                setErreurs((prev) => ({ ...prev, rue: false }));
             }}
-            className={errors.street ? "error-border" : ""}
+            className={erreurs.rue ? "error-border" : ""}
           />
 
-          <label htmlFor="city">City</label>
+          <label htmlFor="ville">Ville</label>
           <input
-            id="city"
+            id="ville"
+            placeholder="Entrez la ville"
             type="text"
-            aria-label="City"
-            value={city}
+            value={ville}
             onChange={(e) => {
-              setCity(e.target.value);
+              setVille(e.target.value);
               if (e.target.value)
-                setErrors((prev) => ({ ...prev, city: false }));
+                setErreurs((prev) => ({ ...prev, ville: false }));
             }}
-            className={errors.city ? "error-border" : ""}
+            className={erreurs.ville ? "error-border" : ""}
           />
 
-          <label htmlFor="state">State</label>
+          <label htmlFor="etat">État</label>
           <StateSelect
-            id="state"
-            value={state}
-            aria-label="State"
+            id="etat"
+            value={etat}
             onChange={(e) => {
-              setState(e.target.value);
+              setEtat(e.target.value);
               if (e.target.value)
-                setErrors((prev) => ({ ...prev, state: false }));
+                setErreurs((prev) => ({ ...prev, etat: false }));
             }}
-            className={errors.state ? "error-border" : ""}
+            className={erreurs.etat ? "error-border" : ""}
           />
 
-          <label htmlFor="zip-code">Zip Code</label>
+          <label htmlFor="code-postal">Code Postal</label>
           <input
-            id="zip-code"
+            id="code-postal"
+            placeholder="Entrez le code postal"
             type="text"
-            aria-label="Zip Code"
-            value={zipCode}
+            value={codePostal}
             onChange={(e) => {
-              setZipCode(e.target.value);
+              setCodePostal(e.target.value);
               if (e.target.value)
-                setErrors((prev) => ({ ...prev, zipCode: false }));
+                setErreurs((prev) => ({ ...prev, codePostal: false }));
             }}
-            className={errors.zipCode ? "error-border" : ""}
+            className={erreurs.codePostal ? "error-border" : ""}
           />
         </fieldset>
 
-        <label htmlFor="department">Department</label>
+        <label htmlFor="departement">Département</label>
         <select
-          id="department"
-          aria-label="Department"
-          value={department}
+          id="departement"
+          value={departement}
           onChange={(e) => {
-            setDepartment(e.target.value);
+            setDepartement(e.target.value);
             if (e.target.value)
-              setErrors((prev) => ({ ...prev, department: false }));
+              setErreurs((prev) => ({ ...prev, departement: false }));
           }}
-          className={errors.department ? "error-border" : ""}
+          className={erreurs.departement ? "error-border" : ""}
         >
-          <option value="">Select Department</option>
-          <option value="Sales">Sales</option>
+          <option value="">Sélectionnez un Département</option>
+          <option value="Ventes">Ventes</option>
           <option value="Marketing">Marketing</option>
-          <option value="Engineering">Engineering</option>
-          <option value="Human Resources">Human Resources</option>
-          <option value="Legal">Legal</option>
+          <option value="Ingénierie">Ingénierie</option>
+          <option value="Ressources Humaines">Ressources Humaines</option>
+          <option value="Juridique">Juridique</option>
         </select>
       </form>
-      <button type="button" aria-label="Save Employee" onClick={saveEmployee}>
-        Save
+      <button
+        className="btnSave"
+        type="button"
+        aria-label="Enregistrer l'Employé"
+        onClick={sauvegarderEmploye}
+      >
+        Enregistrer
       </button>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      {showModal && (
+      {messageErreur && <p className="error-message">{messageErreur}</p>}
+      {afficherModal && (
         <div className="modal" role="dialog" aria-modal="true">
           <div className="modal-content">
             <span
               className="close"
-              onClick={closeModal}
+              onClick={fermerModal}
               role="button"
-              aria-label="Close"
+              aria-label="Fermer"
             >
               &times;
             </span>
-            <p>Employee Created!</p>
+            <p>Employé Créé !</p>
           </div>
         </div>
       )}

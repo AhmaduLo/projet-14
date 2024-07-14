@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const ListeeEmployer = () => {
+const ListeEmployer = () => {
   const [employees, setEmployees] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [employeesPerPage] = useState(10); // Nombre d'employés par page
@@ -95,4 +95,4 @@ const ListeeEmployer = () => {
   );
 };
 
-export default ListeeEmployer;
+export default ListeEmployer;

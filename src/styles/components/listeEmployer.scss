@@ -58,12 +58,12 @@
     background-color: #0056b3;
   }
   .pagination button:disabled {
-    background-color: #cccccc;
+    background-color: #2fc4ff;
     cursor: not-allowed;
   }
   
   .pagination .active {
-    background-color: #acacac; /* Couleur différente pour le bouton actif */
+    background-color: #141414; /* Couleur différente pour le bouton actif */
     font-weight: bold;
   }
 }

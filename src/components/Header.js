@@ -6,18 +6,16 @@ const Header = (props) => {
       <h1>HRNet</h1>
       <nav>
         <ul>
-          <NavLink
-            to="/"
-            className={(nav) => (nav.isActive ? "nav-active" : "")}
-          >
-            <li>Accueil</li>
-          </NavLink>
-          <NavLink
-            to="/employeeListe"
-            className={(nav) => (nav.isActive ? "nav-active" : "")}
-          >
-            <li>ListeEmploye</li>
-          </NavLink>
+          <li>
+            <NavLink to="/" className={(nav) => (nav.isActive ? "nav-active" : "")}>
+              Accueil
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/employeeListe" className={(nav) => (nav.isActive ? "nav-active" : "")}>
+              ListeEmploye
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </header>
