@@ -50,3 +50,11 @@ Le composant ListeeEmployer affiche la liste des employés sauvegardés dans le 
 
 # Contribution
 Les contributions sont les bienvenues ! Veuillez soumettre une issue ou une pull request pour proposer des améliorations ou des corrections.
+
+# Installez et utilisez mon package
+
+ npm install hrnet-react
+
+ # Ensuite, vous pouvez l'importer et l'utiliser
+
+ import HrnetReact from 'hrnet-react';

@@ -1,7 +1,10 @@
 {
   "name": "hrnet-react",
   "version": "0.1.0",
-  "private": true,
+  "description": "HRNet React component",
+  "main": "dist/index.js",
+  "author": "Ahmadu Bamba Gaye Lo",
+  "license": "MIT",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -18,7 +21,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepublishOnly": "npm run build"
   },
   "eslintConfig": {
     "extends": [
