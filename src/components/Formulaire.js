@@ -18,6 +18,7 @@ const Formulaire = (props) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [errors, setErrors] = useState({});
 
+  // Fonction pour réinitialiser les champs du formulaire
   const resetForm = () => {
     setFirstName("");
     setLastName("");
@@ -31,6 +32,7 @@ const Formulaire = (props) => {
     setErrors({});
   };
 
+  // Fonction pour sauvegarder un employé dans le localStorage
   const saveEmployee = () => {
     const newErrors = {};
     if (!firstName) newErrors.firstName = true;
@@ -43,12 +45,14 @@ const Formulaire = (props) => {
     if (!department) newErrors.department = true;
     if (!zipCode) newErrors.zipCode = true;
 
+    // Vérifie s'il y a des erreurs et affiche un message d'erreur si nécessaire
     if (Object.keys(newErrors).length > 0) {
       setErrorMessage("Veuillez remplir tous les champs.");
       setErrors(newErrors);
       return;
     }
 
+    // Vérifie que l'employé a au moins 18 ans
     const age = differenceInYears(new Date(), dateOfBirth);
     if (age < 18) {
       setErrorMessage("L'employé doit avoir au moins 18 ans.");
@@ -56,6 +60,7 @@ const Formulaire = (props) => {
       return;
     }
 
+    // Sauvegarde l'employé dans le localStorage
     const employees = JSON.parse(localStorage.getItem("employees")) || [];
     const employee = {
       firstName,
@@ -75,6 +80,7 @@ const Formulaire = (props) => {
     resetForm();
   };
 
+  // Fonction pour fermer le modal et réinitialiser le formulaire
   const closeModal = () => {
     setShowModal(false);
     resetForm();
@@ -92,7 +98,8 @@ const Formulaire = (props) => {
           value={firstName}
           onChange={(e) => {
             setFirstName(e.target.value);
-            if (e.target.value) setErrors((prev) => ({ ...prev, firstName: false }));
+            if (e.target.value)
+              setErrors((prev) => ({ ...prev, firstName: false }));
           }}
           className={errors.firstName ? "error-border" : ""}
         />
@@ -105,7 +112,8 @@ const Formulaire = (props) => {
           value={lastName}
           onChange={(e) => {
             setLastName(e.target.value);
-            if (e.target.value) setErrors((prev) => ({ ...prev, lastName: false }));
+            if (e.target.value)
+              setErrors((prev) => ({ ...prev, lastName: false }));
           }}
           className={errors.lastName ? "error-border" : ""}
         />
@@ -147,7 +155,8 @@ const Formulaire = (props) => {
             value={street}
             onChange={(e) => {
               setStreet(e.target.value);
-              if (e.target.value) setErrors((prev) => ({ ...prev, street: false }));
+              if (e.target.value)
+                setErrors((prev) => ({ ...prev, street: false }));
             }}
             className={errors.street ? "error-border" : ""}
           />
@@ -160,7 +169,8 @@ const Formulaire = (props) => {
             value={city}
             onChange={(e) => {
               setCity(e.target.value);
-              if (e.target.value) setErrors((prev) => ({ ...prev, city: false }));
+              if (e.target.value)
+                setErrors((prev) => ({ ...prev, city: false }));
             }}
             className={errors.city ? "error-border" : ""}
           />
@@ -171,7 +181,8 @@ const Formulaire = (props) => {
             value={state}
             onChange={(e) => {
               setState(e.target.value);
-              if (e.target.value) setErrors((prev) => ({ ...prev, state: false }));
+              if (e.target.value)
+                setErrors((prev) => ({ ...prev, state: false }));
             }}
             className={errors.state ? "error-border" : ""}
           />
@@ -184,7 +195,8 @@ const Formulaire = (props) => {
             value={zipCode}
             onChange={(e) => {
               setZipCode(e.target.value);
-              if (e.target.value) setErrors((prev) => ({ ...prev, zipCode: false }));
+              if (e.target.value)
+                setErrors((prev) => ({ ...prev, zipCode: false }));
             }}
             className={errors.zipCode ? "error-border" : ""}
           />
@@ -196,7 +208,8 @@ const Formulaire = (props) => {
           value={department}
           onChange={(e) => {
             setDepartment(e.target.value);
-            if (e.target.value) setErrors((prev) => ({ ...prev, department: false }));
+            if (e.target.value)
+              setErrors((prev) => ({ ...prev, department: false }));
           }}
           className={errors.department ? "error-border" : ""}
         >
