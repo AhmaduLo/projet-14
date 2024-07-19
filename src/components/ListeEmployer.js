@@ -1,25 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const ListeEmployer = () => {
   const [employees, setEmployees] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [employeesPerPage] = useState(10); // Nombre d'employés par page
+  const [employeesPerPage, setEmployeesPerPage] = useState(10); // Nombre d'employés par page
+  const [sortConfig, setSortConfig] = useState({
+    key: null, // Clé de tri
+    direction: "ascending", // Direction du tri
+  });
+  const [searchTerm, setSearchTerm] = useState(""); // Terme de recherche
 
+  // Effet pour charger les employés depuis le localStorage lors du premier rendu
   useEffect(() => {
-    const storedEmployees = JSON.parse(localStorage.getItem('employees')) || [];
+    const storedEmployees = JSON.parse(localStorage.getItem("employees")) || [];
     setEmployees(storedEmployees);
   }, []);
+
+  // Fonction pour trier les employés en fonction d'une clé
+  const sortEmployees = (key) => {
+    let direction = "ascending";
+    // Changer la direction du tri si la même clé est cliquée
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    } else if (sortConfig.key === key && sortConfig.direction === "descending") {
+      direction = "ascending";
+    }
+    // Mise à jour de la configuration de tri
+    setSortConfig({ key, direction });
+  };
+
+  // Création d'une liste triée des employés en fonction de la configuration de tri
+  const sortedEmployees = React.useMemo(() => {
+    // Création d'une copie de la liste des employés
+    let sortableEmployees = [...employees];
+    // Si une clé de tri est définie, trier les employés
+    if (sortConfig.key !== null) {
+      sortableEmployees.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    // Filtrer les employés en fonction du terme de recherche
+    return sortableEmployees.filter((employee) =>
+      Object.values(employee).some((val) =>
+        val.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  }, [employees, sortConfig, searchTerm]);
 
   // Calcul des employés à afficher sur la page actuelle
   const indexOfLastEmployee = currentPage * employeesPerPage;
   const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
-  const currentEmployees = employees.slice(indexOfFirstEmployee, indexOfLastEmployee);
+  const currentEmployees = sortedEmployees.slice(
+    indexOfFirstEmployee,
+    indexOfLastEmployee
+  );
 
   // Changer de page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // Déterminer le nombre total de pages
-  const totalPages = Math.ceil(employees.length / employeesPerPage);
+  const totalPages = Math.ceil(sortedEmployees.length / employeesPerPage);
 
   // Fonction pour passer à la page suivante
   const nextPage = () => {
@@ -35,9 +81,47 @@ const ListeEmployer = () => {
     }
   };
 
+  const getArrowClass = (key) => {
+    if (sortConfig.key === key) {
+      return sortConfig.direction === "ascending"
+        ? "sort-arrow asc"
+        : "sort-arrow desc";
+    }
+    return "sort-arrow";
+  };
+
   return (
     <div className="container1">
       <h2>Employee List</h2>
+      <div className="controls">
+        {/* Sélecteur du nombre d'entrées par page */}
+        <label>
+          Show{" "}
+          <select
+            value={employeesPerPage}
+            onChange={(e) => {
+              setEmployeesPerPage(Number(e.target.value));
+              setCurrentPage(1); // Reset to first page
+            }}
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+          </select>{" "}
+          entries
+        </label>
+        {/* Champ de recherche */}
+        <label>
+          Search:{" "}
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </label>
+      </div>
       {employees.length === 0 ? (
         <p>La liste est vide.</p>
       ) : (
@@ -45,15 +129,35 @@ const ListeEmployer = () => {
           <table className="employee-table">
             <thead>
               <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Start Date</th>
-                <th>Department</th>
-                <th>Date of Birth</th>
-                <th>Street</th>
-                <th>City</th>
-                <th>State</th>
-                <th>Zip Code</th>
+                <th onClick={() => sortEmployees("firstName")}>
+                  <span className={getArrowClass("firstName")}>First Name</span>
+                </th>
+                <th onClick={() => sortEmployees("lastName")}>
+                  <span className={getArrowClass("lastName")}>Last Name</span>
+                </th>
+                <th onClick={() => sortEmployees("startDate")}>
+                  <span className={getArrowClass("startDate")}>Start Date</span>
+                </th>
+                <th onClick={() => sortEmployees("department")}>
+                  <span className={getArrowClass("department")}>Department</span>
+                </th>
+                <th onClick={() => sortEmployees("dateOfBirth")}>
+                  <span className={getArrowClass("dateOfBirth")}>
+                    Date of Birth
+                  </span>
+                </th>
+                <th onClick={() => sortEmployees("street")}>
+                  <span className={getArrowClass("street")}>Street</span>
+                </th>
+                <th onClick={() => sortEmployees("city")}>
+                  <span className={getArrowClass("city")}>City</span>
+                </th>
+                <th onClick={() => sortEmployees("state")}>
+                  <span className={getArrowClass("state")}>State</span>
+                </th>
+                <th onClick={() => sortEmployees("zipCode")}>
+                  <span className={getArrowClass("zipCode")}>Zip Code</span>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -80,7 +184,7 @@ const ListeEmployer = () => {
               <button
                 key={index}
                 onClick={() => paginate(index + 1)}
-                className={currentPage === index + 1 ? 'active' : ''}
+                className={currentPage === index + 1 ? "active" : ""}
               >
                 {index + 1}
               </button>
@@ -88,6 +192,12 @@ const ListeEmployer = () => {
             <button onClick={nextPage} disabled={currentPage === totalPages}>
               Next
             </button>
+          </div>
+          {/* Affichage du nombre d'entrées affichées */}
+          <div className="entries-info">
+            Showing {indexOfFirstEmployee + 1} to{" "}
+            {Math.min(indexOfLastEmployee, sortedEmployees.length)} of{" "}
+            {sortedEmployees.length} entries
           </div>
         </>
       )}
