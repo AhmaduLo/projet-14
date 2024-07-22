@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import StateSelect from "./StateSelect.js";
 import DatePicker from "react-datepicker";
 import { differenceInYears } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
-import { addEmployee } from './actions'; // Importer l'action
+import { addEmployee } from "./actions";
+import { Modal } from "my-unique-modal-component"; // Utilisation de l'import nommé
 
 const Formulaire = () => {
-  const dispatch = useDispatch(); // Utiliser dispatch pour envoyer des actions
+  const dispatch = useDispatch();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState(null);
@@ -21,7 +22,6 @@ const Formulaire = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [errors, setErrors] = useState({});
 
-  // Fonction pour réinitialiser les champs du formulaire
   const resetForm = () => {
     setFirstName("");
     setLastName("");
@@ -35,7 +35,6 @@ const Formulaire = () => {
     setErrors({});
   };
 
-  // Fonction pour sauvegarder un employé dans l'état
   const saveEmployee = () => {
     const newErrors = {};
     if (!firstName) newErrors.firstName = true;
@@ -48,14 +47,12 @@ const Formulaire = () => {
     if (!department) newErrors.department = true;
     if (!zipCode) newErrors.zipCode = true;
 
-    // Vérifie s'il y a des erreurs et affiche un message d'erreur si nécessaire
     if (Object.keys(newErrors).length > 0) {
       setErrorMessage("Veuillez remplir tous les champs.");
       setErrors(newErrors);
       return;
     }
 
-    // Vérifie que l'employé a au moins 18 ans
     const age = differenceInYears(new Date(), dateOfBirth);
     if (age < 18) {
       setErrorMessage("L'employé doit avoir au moins 18 ans.");
@@ -63,7 +60,6 @@ const Formulaire = () => {
       return;
     }
 
-    // Sauvegarde l'employé dans l'état
     const employee = {
       firstName,
       lastName,
@@ -76,16 +72,14 @@ const Formulaire = () => {
       zipCode,
     };
 
-    dispatch(addEmployee(employee)); // Utiliser dispatch pour ajouter un employé
-    setShowModal(true);
+    dispatch(addEmployee(employee));
+    setShowModal(true); // Afficher le modal
     setErrorMessage("");
     resetForm();
   };
 
-  // Fonction pour fermer le modal et réinitialiser le formulaire
   const closeModal = () => {
-    setShowModal(false);
-    resetForm();
+    setShowModal(false); // Fermer le modal
   };
 
   return (
@@ -100,8 +94,7 @@ const Formulaire = () => {
           value={firstName}
           onChange={(e) => {
             setFirstName(e.target.value);
-            if (e.target.value)
-              setErrors((prev) => ({ ...prev, firstName: false }));
+            if (e.target.value) setErrors((prev) => ({ ...prev, firstName: false }));
           }}
           className={errors.firstName ? "error-border" : ""}
         />
@@ -114,8 +107,7 @@ const Formulaire = () => {
           value={lastName}
           onChange={(e) => {
             setLastName(e.target.value);
-            if (e.target.value)
-              setErrors((prev) => ({ ...prev, lastName: false }));
+            if (e.target.value) setErrors((prev) => ({ ...prev, lastName: false }));
           }}
           className={errors.lastName ? "error-border" : ""}
         />
@@ -157,8 +149,7 @@ const Formulaire = () => {
             value={street}
             onChange={(e) => {
               setStreet(e.target.value);
-              if (e.target.value)
-                setErrors((prev) => ({ ...prev, street: false }));
+              if (e.target.value) setErrors((prev) => ({ ...prev, street: false }));
             }}
             className={errors.street ? "error-border" : ""}
           />
@@ -171,8 +162,7 @@ const Formulaire = () => {
             value={city}
             onChange={(e) => {
               setCity(e.target.value);
-              if (e.target.value)
-                setErrors((prev) => ({ ...prev, city: false }));
+              if (e.target.value) setErrors((prev) => ({ ...prev, city: false }));
             }}
             className={errors.city ? "error-border" : ""}
           />
@@ -183,8 +173,7 @@ const Formulaire = () => {
             value={state}
             onChange={(e) => {
               setState(e.target.value);
-              if (e.target.value)
-                setErrors((prev) => ({ ...prev, state: false }));
+              if (e.target.value) setErrors((prev) => ({ ...prev, state: false }));
             }}
             className={errors.state ? "error-border" : ""}
           />
@@ -197,8 +186,7 @@ const Formulaire = () => {
             value={zipCode}
             onChange={(e) => {
               setZipCode(e.target.value);
-              if (e.target.value)
-                setErrors((prev) => ({ ...prev, zipCode: false }));
+              if (e.target.value) setErrors((prev) => ({ ...prev, zipCode: false }));
             }}
             className={errors.zipCode ? "error-border" : ""}
           />
@@ -210,8 +198,7 @@ const Formulaire = () => {
           value={department}
           onChange={(e) => {
             setDepartment(e.target.value);
-            if (e.target.value)
-              setErrors((prev) => ({ ...prev, department: false }));
+            if (e.target.value) setErrors((prev) => ({ ...prev, department: false }));
           }}
           className={errors.department ? "error-border" : ""}
         >
@@ -232,21 +219,7 @@ const Formulaire = () => {
         Enregistrer
       </button>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
-      {showModal && (
-        <div className="modal" role="dialog" aria-modal="true">
-          <div className="modal-content">
-            <span
-              className="close"
-              onClick={closeModal}
-              role="button"
-              aria-label="Fermer"
-            >
-              &times;
-            </span>
-            <p>Employé Créé !</p>
-          </div>
-        </div>
-      )}
+      <Modal show={showModal} onClose={closeModal} message="Employé Créé !" />
     </div>
   );
 };
