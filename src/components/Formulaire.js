@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useDispatch } from 'react-redux';
 import StateSelect from "./StateSelect.js";
 import DatePicker from "react-datepicker";
 import { differenceInYears } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
+import { addEmployee } from './actions'; // Importer l'action
 
-const Formulaire = (props) => {
+const Formulaire = () => {
+  const dispatch = useDispatch(); // Utiliser dispatch pour envoyer des actions
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState(null);
@@ -32,7 +35,7 @@ const Formulaire = (props) => {
     setErrors({});
   };
 
-  // Fonction pour sauvegarder un employé dans le localStorage
+  // Fonction pour sauvegarder un employé dans l'état
   const saveEmployee = () => {
     const newErrors = {};
     if (!firstName) newErrors.firstName = true;
@@ -60,8 +63,7 @@ const Formulaire = (props) => {
       return;
     }
 
-    // Sauvegarde l'employé dans le localStorage
-    const employees = JSON.parse(localStorage.getItem("employees")) || [];
+    // Sauvegarde l'employé dans l'état
     const employee = {
       firstName,
       lastName,
@@ -73,8 +75,8 @@ const Formulaire = (props) => {
       state,
       zipCode,
     };
-    employees.push(employee);
-    localStorage.setItem("employees", JSON.stringify(employees));
+
+    dispatch(addEmployee(employee)); // Utiliser dispatch pour ajouter un employé
     setShowModal(true);
     setErrorMessage("");
     resetForm();

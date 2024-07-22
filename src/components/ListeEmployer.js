@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useSelector } from 'react-redux'; // Utiliser useSelector pour accéder à l'état
 
 const ListeEmployer = () => {
-  const [employees, setEmployees] = useState([]);
+  const employees = useSelector((state) => state.employees); // Récupérer les employés depuis Redux
   const [currentPage, setCurrentPage] = useState(1);
   const [employeesPerPage, setEmployeesPerPage] = useState(10); // Nombre d'employés par page
   const [sortConfig, setSortConfig] = useState({
@@ -9,12 +10,6 @@ const ListeEmployer = () => {
     direction: "ascending", // Direction du tri
   });
   const [searchTerm, setSearchTerm] = useState(""); // Terme de recherche
-
-  // Effet pour charger les employés depuis le localStorage lors du premier rendu
-  useEffect(() => {
-    const storedEmployees = JSON.parse(localStorage.getItem("employees")) || [];
-    setEmployees(storedEmployees);
-  }, []);
 
   // Fonction pour trier les employés en fonction d'une clé
   const sortEmployees = (key) => {

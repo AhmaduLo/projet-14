@@ -3,10 +3,12 @@ import Employee_list from "./pages/Employee_list";
 import Employee_form from "./pages/Employee_form";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+import { EmployeeProvider } from './components/EmployeeContext';
 
 function App() {
   return (
     <BrowserRouter>
+     <EmployeeProvider>
       <div className="app-container">
         <Header />
         <main className="content">
@@ -17,6 +19,7 @@ function App() {
         </main>
         <Footer />
       </div>
+      </EmployeeProvider>
     </BrowserRouter>
   );
 }
