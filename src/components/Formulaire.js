@@ -35,6 +35,9 @@ const Formulaire = () => {
     setErrors({});
   };
 
+  const isOnlyLetters = (str) => /^[A-Za-zÀ-ÖØ-öø-ÿ\s-]+$/.test(str);
+  const isOnlyNumbers = (str) => /^[0-9]*$/.test(str);
+
   const saveEmployee = () => {
     const newErrors = {};
     if (!firstName) newErrors.firstName = true;
@@ -93,8 +96,11 @@ const Formulaire = () => {
           placeholder="Entrez le prénom"
           value={firstName}
           onChange={(e) => {
-            setFirstName(e.target.value);
-            if (e.target.value) setErrors((prev) => ({ ...prev, firstName: false }));
+            if (isOnlyLetters(e.target.value) || e.target.value === "") {
+              setFirstName(e.target.value);
+              if (e.target.value)
+                setErrors((prev) => ({ ...prev, firstName: false }));
+            }
           }}
           className={errors.firstName ? "error-border" : ""}
         />
@@ -106,8 +112,11 @@ const Formulaire = () => {
           placeholder="Entrez le nom"
           value={lastName}
           onChange={(e) => {
-            setLastName(e.target.value);
-            if (e.target.value) setErrors((prev) => ({ ...prev, lastName: false }));
+            if (isOnlyLetters(e.target.value) || e.target.value === "") {
+              setLastName(e.target.value);
+              if (e.target.value)
+                setErrors((prev) => ({ ...prev, lastName: false }));
+            }
           }}
           className={errors.lastName ? "error-border" : ""}
         />
@@ -149,7 +158,8 @@ const Formulaire = () => {
             value={street}
             onChange={(e) => {
               setStreet(e.target.value);
-              if (e.target.value) setErrors((prev) => ({ ...prev, street: false }));
+              if (e.target.value)
+                setErrors((prev) => ({ ...prev, street: false }));
             }}
             className={errors.street ? "error-border" : ""}
           />
@@ -161,8 +171,11 @@ const Formulaire = () => {
             type="text"
             value={city}
             onChange={(e) => {
-              setCity(e.target.value);
-              if (e.target.value) setErrors((prev) => ({ ...prev, city: false }));
+              if (isOnlyLetters(e.target.value) || e.target.value === "") {
+                setCity(e.target.value);
+                if (e.target.value)
+                  setErrors((prev) => ({ ...prev, city: false }));
+              }
             }}
             className={errors.city ? "error-border" : ""}
           />
@@ -173,7 +186,8 @@ const Formulaire = () => {
             value={state}
             onChange={(e) => {
               setState(e.target.value);
-              if (e.target.value) setErrors((prev) => ({ ...prev, state: false }));
+              if (e.target.value)
+                setErrors((prev) => ({ ...prev, state: false }));
             }}
             className={errors.state ? "error-border" : ""}
           />
@@ -185,8 +199,11 @@ const Formulaire = () => {
             type="text"
             value={zipCode}
             onChange={(e) => {
-              setZipCode(e.target.value);
-              if (e.target.value) setErrors((prev) => ({ ...prev, zipCode: false }));
+              if (isOnlyNumbers(e.target.value) || e.target.value === "") {
+                setZipCode(e.target.value);
+                if (e.target.value)
+                  setErrors((prev) => ({ ...prev, zipCode: false }));
+              }
             }}
             className={errors.zipCode ? "error-border" : ""}
           />
@@ -198,7 +215,8 @@ const Formulaire = () => {
           value={department}
           onChange={(e) => {
             setDepartment(e.target.value);
-            if (e.target.value) setErrors((prev) => ({ ...prev, department: false }));
+            if (e.target.value)
+              setErrors((prev) => ({ ...prev, department: false }));
           }}
           className={errors.department ? "error-border" : ""}
         >

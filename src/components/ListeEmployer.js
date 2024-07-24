@@ -1,23 +1,25 @@
 import React, { useState } from "react";
-import { useSelector } from 'react-redux'; // Utiliser useSelector pour accéder à l'état
+import { useSelector } from "react-redux";
 
 const ListeEmployer = () => {
   const employees = useSelector((state) => state.employees); // Récupérer les employés depuis Redux
   const [currentPage, setCurrentPage] = useState(1);
-  const [employeesPerPage, setEmployeesPerPage] = useState(10); // Nombre d'employés par page
+  const [employeesPerPage, setEmployeesPerPage] = useState(10);
   const [sortConfig, setSortConfig] = useState({
-    key: null, // Clé de tri
-    direction: "ascending", // Direction du tri
+    key: null,
+    direction: "ascending",
   });
-  const [searchTerm, setSearchTerm] = useState(""); // Terme de recherche
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Fonction pour trier les employés en fonction d'une clé
   const sortEmployees = (key) => {
     let direction = "ascending";
-    // Changer la direction du tri si la même clé est cliquée
     if (sortConfig.key === key && sortConfig.direction === "ascending") {
       direction = "descending";
-    } else if (sortConfig.key === key && sortConfig.direction === "descending") {
+    } else if (
+      sortConfig.key === key &&
+      sortConfig.direction === "descending"
+    ) {
       direction = "ascending";
     }
     // Mise à jour de la configuration de tri
@@ -26,9 +28,7 @@ const ListeEmployer = () => {
 
   // Création d'une liste triée des employés en fonction de la configuration de tri
   const sortedEmployees = React.useMemo(() => {
-    // Création d'une copie de la liste des employés
     let sortableEmployees = [...employees];
-    // Si une clé de tri est définie, trier les employés
     if (sortConfig.key !== null) {
       sortableEmployees.sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
@@ -58,7 +58,7 @@ const ListeEmployer = () => {
 
   // Changer de page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+ 
   // Déterminer le nombre total de pages
   const totalPages = Math.ceil(sortedEmployees.length / employeesPerPage);
 
@@ -89,7 +89,6 @@ const ListeEmployer = () => {
     <div className="container1">
       <h2>Employee List</h2>
       <div className="controls">
-        {/* Sélecteur du nombre d'entrées par page */}
         <label>
           Show{" "}
           <select
@@ -134,7 +133,9 @@ const ListeEmployer = () => {
                   <span className={getArrowClass("startDate")}>Start Date</span>
                 </th>
                 <th onClick={() => sortEmployees("department")}>
-                  <span className={getArrowClass("department")}>Department</span>
+                  <span className={getArrowClass("department")}>
+                    Department
+                  </span>
                 </th>
                 <th onClick={() => sortEmployees("dateOfBirth")}>
                   <span className={getArrowClass("dateOfBirth")}>

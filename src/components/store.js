@@ -1,7 +1,7 @@
 import { createStore } from "redux";
 import rootReducer from "./reducers";
 import { persistStore, persistReducer } from "redux-persist";
-import storageSession from "redux-persist/lib/storage/session"; // Utilisation de sessionStorage
+import storageSession from "redux-persist/lib/storage/session";
 
 // Configuration pour redux-persist
 const persistConfig = {
@@ -12,7 +12,6 @@ const persistConfig = {
 // Création d'un réducteur persisté en utilisant la configuration définie et le réducteur racine
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Création du store Redux en utilisant le réducteur persisté
+
 export const store = createStore(persistedReducer);
-// Création d'un persistor pour gérer le persisting du store
 export const persistor = persistStore(store);
